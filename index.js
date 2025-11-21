@@ -32,17 +32,24 @@ container.appendChild(gridContainer);
 /* CREATING LISTENERS */
 
 button.addEventListener("click", e => {
-    removeGridItems();
-    const squareQuantity = Number(prompt("Pleas inser the desire quantity of squares"));
-    const totalDivs = squareQuantity * squareQuantity;
+    const squareQuantity = Number(prompt("Please insert the desire quantity of squares"));
 
-    for (let i = 1; i <= totalDivs; i++) {
-        const gridItem = createGridElement(squareQuantity);
-        gridContainer.appendChild(gridItem);
+    if (squareQuantity > 100 || squareQuantity <= 0) {
+        alert("Please insert a number of squares between 1 and 100");
+    }else {
+        removeGridItems();
+        const totalDivs = squareQuantity * squareQuantity;
+    
+        for (let i = 1; i <= totalDivs; i++) {
+            const gridItem = createGridElement(squareQuantity);
+            gridContainer.appendChild(gridItem);
+        }
+    
+        container.appendChild(gridContainer);
     }
-
-    container.appendChild(gridContainer);
 })
+
+let clicked = false;
 
 function createGridElement(totalSquares){
     const gridItem = document.createElement("div");
@@ -50,6 +57,13 @@ function createGridElement(totalSquares){
     const style = `width: ${size} height: ${size} border: 1px solid black;`;
     gridItem.setAttribute("style", `${style}`);
     gridItem.classList.add("grid-item");
+    document.body.onmousedown = () => clicked = true;
+    document.body.onmouseup = () => clicked = false;
+    gridItem.addEventListener("mousemove", e => {
+        if (clicked) e.target.style.backgroundColor = "#4554ff";
+    })
+
+
     return gridItem;
 }
 
